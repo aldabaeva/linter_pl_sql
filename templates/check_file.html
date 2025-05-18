@@ -1,0 +1,20 @@
+﻿{% extends "index.html" %} {% block content %}
+<div class="check-file">
+    <h2>Проверить файл (.sql)</h2>
+    <form method="POST" action="{{ url_for('process_check') }}" enctype="multipart/form-data">
+        <div class="form-group">
+            <!--<label for="sql_file">Выберите файл для проверки (.sql):</label>-->
+            <input type="file" id="sql_file" name="sql_file" accept=".sql" required>
+        </div>
+        <button type="submit" class="btn">Проверить</button>
+    </form>
+
+    {% if report_path %}
+    <div class="report-link">
+        <a href="{{ url_for('static', filename='temp/' + report_path.split('/')[-1]) }}" target="_blank">Просмотреть отчет</a>
+    </div>
+    {% else %}
+    <p>Отчет еще не сгенерирован.</p>
+    {% endif %}
+</div>
+{% endblock %}

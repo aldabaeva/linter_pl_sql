@@ -1,0 +1,4 @@
+﻿users:
+  admin:
+    password: "123456"
+    role: admin

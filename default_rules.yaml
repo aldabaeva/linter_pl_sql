@@ -1,0 +1,189 @@
+﻿rules:
+  line_length:
+    enabled: true
+    level: warning
+    description: Длина строки превышает допустимое значение
+    max_length: 80
+    regex: null
+    function: check_line_length
+
+  variable_naming:
+    enabled: true
+    level: warning
+    description: Имя переменной должно начинаться с v_ или l_
+    regex: \b(v_|l_)[A-Za-z0-9_]+\s*:=
+    prefixes:
+      - v_
+      - l_
+    function: check_variable_naming
+
+  constant_naming:
+    enabled: true
+    level: error
+    description: Константа должна начинаться с C_
+    regex: ^C_[A-Z][A-Z0-9_]*$
+    function: check_constant_naming
+
+  procedure_comment_required:
+    enabled: true
+    level: warning
+    description: Процедура должна иметь комментарий выше
+    function: check_procedure_comments
+
+  function_comment_required:
+    enabled: true
+    level: warning
+    description: Функция должна иметь комментарий выше
+    function: check_function_comments
+
+  package_comment_required:
+    enabled: true
+    level: warning
+    description: Пакет должен иметь комментарий выше
+    function: check_package_comments
+
+  trigger_comment_required:
+    enabled: true
+    level: warning
+    description: Триггер должен иметь комментарий выше
+    function: check_trigger_comments
+
+  comment_min_length:
+    enabled: true
+    level: warning
+    description: Комментарий слишком короткий (минимум 2 символа)
+    function: check_comment_min_length
+
+  select_star_forbidden:
+    enabled: true
+    level: warning
+    description: SELECT * — плохая практика
+    regex: SELECT\s*\*
+    ignore_case: true
+    function: check_select_star
+
+  commit_in_trigger:
+    enabled: true
+    level: error
+    description: COMMIT/ROLLBACK внутри триггера запрещены
+    function: check_commit_in_trigger
+
+  explicit_column_list:
+    enabled: true
+    level: warning
+    description: INSERT без явного указания столбцов — плохая практика
+    regex: INSERT\s+INTO\s+\w+\s+VALUES
+    ignore_case: true
+    function: check_explicit_column_list
+
+  use_nvl_instead_of_coalesce:
+    enabled: true
+    level: info
+    description: Рекомендуется использовать NVL вместо COALESCE
+    regex: \bCOALESCE\s*$
+    ignore_case: true
+    function: check_use_nvl_instead_of_coalesce
+
+  no_hardcoded_strings:
+    enabled: true
+    level: warning
+    description: Жестко закодированные строки (например, 'ACTIVE') — плохая практика
+    regex: (?<!VARCHAR2|VARCHAR|CHAR)\s*:=
+    function: check_no_hardcoded_strings
+
+  uppercase_keywords:
+    enabled: true
+    level: warning
+    description: Все ключевые слова SQL должны быть в верхнем регистре
+    keywords:
+      - SELECT
+      - FROM
+      - WHERE
+      - PROCEDURE
+      - FUNCTION
+      - BEGIN
+      - END
+      - IS
+      - AS
+    function: check_uppercase_keywords
+
+  table_alias_lowercase:
+    enabled: true
+    level: warning
+    description: Псевдонимы таблиц должны быть строчными
+    regex: ([a-zA-Z]+)\s+AS
+    function: check_table_alias_lowercase
+
+  avoid_too_many_columns:
+    enabled: true
+    level: warning
+    description: Максимум 15 колонок в запросе SELECT
+    max_columns: 15
+    regex: SELECT\s+(.+?)\s+FROM
+    function: check_avoid_too_many_columns
+
+  begin_on_new_line:
+    enabled: true
+    level: warning
+    description: BEGIN должен быть на новой строке
+    function: check_begin_on_new_line
+
+  end_with_semicolon:
+    enabled: true
+    level: warning
+    description: Блок END должен заканчиваться ;
+    function: check_end_with_semicolon
+
+  missing_exception_block:
+    enabled: true
+    level: warning
+    description: Отсутствует блок EXCEPTION
+    function: check_missing_exception_block
+
+  prefer_named_exceptions:
+    enabled: true
+    level: info
+    description: Рекомендуется давать имя блокам EXCEPTION
+    regex: EXCEPTION\s+WHEN
+    function: check_prefer_named_exceptions
+
+categories:
+  - name: style
+    description: "Стиль написания кода"
+    rules:
+      - line_length
+      - variable_naming
+      - constant_naming
+      - comment_min_length
+      - uppercase_keywords
+      - table_alias_lowercase
+      - begin_on_new_line
+      - end_with_semicolon
+
+  - name: structure
+    description: "Структурные ошибки"
+    rules:
+      - procedure_comment_required
+      - function_comment_required
+      - package_comment_required
+      - trigger_comment_required
+      - missing_exception_block
+      - prefer_named_exceptions
+
+  - name: performance
+    description: "Потенциальные проблемы производительности"
+    rules:
+      - select_star_forbidden
+      - explicit_column_list
+      - avoid_too_many_columns
+
+  - name: reliability
+    description: "Надёжность и безопасность"
+    rules:
+      - commit_in_trigger
+      - no_hardcoded_strings
+
+  - name: conventions
+    description: "Соблюдение соглашений"
+    rules:
+      - use_nvl_instead_of_coalesce

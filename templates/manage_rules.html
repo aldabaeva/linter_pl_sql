@@ -1,0 +1,57 @@
+﻿{% extends "index.html" %} {% block content %}
+<div class="rules-management">
+    <h2>Управление правилами проверки</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        <div class="form-actions">
+            <button type="submit" name="action" value="save" class="btn">Сохранить изменения</button>
+            <button type="submit" name="action" value="reset" class="btn btn-secondary">Сбросить к стандартным</button>
+            <input type="file" name="yaml_file" accept=".yaml,.yml" style="display: none" id="yaml-upload">
+            <button type="button" onclick="document.getElementById('yaml-upload').click()" class="btn btn-secondary">
+                Импортировать правила
+            </button>
+            <button type="submit" name="action" value="upload" style="display: none"></button>
+            <a href="{{ url_for('export_yaml') }}" class="btn btn-secondary">Экспортировать правила</a>
+        </div>
+
+        <div class="rules-container">
+            {% for category in rules.categories %}
+            <div class="category">
+                <h3>{{ category.name }} ({{ category.description }})</h3>
+                <div class="rules-list">
+                    {% for rule_key in category.rules %} {% set rule = rules.rules[rule_key] %}
+                    <div class="rule">
+                        <div class="rule-header">
+                            <input type="checkbox" id="{{ rule_key }}_enabled" name="{{ rule_key }}_enabled" {% if rule.enabled %}checked{% endif %}>
+                            <label for="{{ rule_key }}_enabled"><strong>{{ rule.description }}</strong></label>
+
+                            <select name="{{ rule_key }}_level">
+                                <option value="warning" {% if rule.level == 'warning' %}selected{% endif %}>Предупреждение</option>
+                                <option value="error" {% if rule.level == 'error' %}selected{% endif %}>Ошибка</option>
+                                <option value="info" {% if rule.level == 'info' %}selected{% endif %}>Информация</option>
+                            </select>
+                        </div>
+
+                        {% if 'regex' in rule %}
+                        <div class="rule-regex">
+                            <label for="{{ rule_key }}_regex">Регулярное выражение:</label>
+                            <input type="text" id="{{ rule_key }}_regex" name="{{ rule_key }}_regex" value="{{ rule.regex if rule.regex else '' }}" placeholder="Регулярное выражение">
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </form>
+</div>
+
+<script>
+    document.getElementById('yaml-upload').addEventListener('change', function() {
+        if (this.files.length > 0) {
+            document.querySelector('button[name="action"][value="upload"]').click();
+        }
+    });
+</script>
+{% endblock %}

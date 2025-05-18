@@ -1,0 +1,17 @@
+﻿# Python cache files
+__pycache__/
+*.py[cod]
+
+# Flask session files
+instance/
+*.sqlite
+
+# Temporary files
+static/temp/
+
+# IDE files
+.idea/
+.vscode/
+
+# Environment files
+.env
