@@ -43,8 +43,12 @@ PL/SQL Linter — это инструмент для проверки PL/SQL-к�
 Установка зависимостей:
 ```bash
 pip install flask pyyaml
+```
 
+Проверка зависмостей:
+```bash
 pip list
+```
 
 **Контакты**:
 - **GitHub**: [https://github.com/aldabaeva ](https://github.com/aldabaeva )  
